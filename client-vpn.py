@@ -4,6 +4,7 @@ import subprocess
 import boto3
 import logging
 import os
+import botocore
 
 from botocore import exceptions
 
@@ -118,7 +119,6 @@ response = cloudformation.create_stack(
     TemplateBody=template,
     Parameters=parameters,
     TimeoutInMinutes=15,
-    OnFailure='DELETE',
     Tags=tags
 )
 
