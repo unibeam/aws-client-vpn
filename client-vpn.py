@@ -43,7 +43,10 @@ parser.add_argument("--client-cn", help="common name for the server certificate"
 parser.add_argument("--name", help="stack and environment name the vpn",
                     action="store", required=True)
 
-parser.add_argument("--subnet-id", help="SubnetId to which the vpn will assocate with",
+parser.add_argument("--subnet-id1", help="SubnetId to which the vpn will assocate with in AZ1",
+                    action="store", required=True)
+
+parser.add_argument("--subnet-id2", help="SubnetId to which the vpn will assocate with in AZ2",
                     action="store", required=True)
 
 parser.add_argument("--cidr", help="CIDR the vpn will give to the clients",
@@ -101,7 +104,8 @@ parameters = []
 parameters.append({'ParameterKey': 'EnvironmentName', 'ParameterValue': args.name})
 parameters.append({'ParameterKey': 'ClientCertificateArn', 'ParameterValue': client_certificate_arn})
 parameters.append({'ParameterKey': 'ServerCertificateArn', 'ParameterValue': server_certificate_arn})
-parameters.append({'ParameterKey': 'AssociationSubnetId', 'ParameterValue': args.subnet_id})
+parameters.append({'ParameterKey': 'AssociationSubnetId1', 'ParameterValue': args.subnet_id1})
+parameters.append({'ParameterKey': 'AssociationSubnetId2', 'ParameterValue': args.subnet_id2})
 
 if args.cidr:
     parameters.append({'ParameterKey': 'ClientCidrBlock', 'ParameterValue': args.cidr})

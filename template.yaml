@@ -24,8 +24,11 @@ Parameters:
     Description: arn of the acm imported server certificate
     Type: String
     NoEcho: false
-  AssociationSubnetId:
-    Description: The subnet to assciate the VPN endpoint with
+  AssociationSubnetId1:
+    Description: The subnet to assciate the VPN endpoint with in AZ1
+    Type: AWS::EC2::Subnet::Id
+  AssociationSubnetId2:
+    Description: The subnet to assciate the VPN endpoint with in AZ2
     Type: AWS::EC2::Subnet::Id
 
 Resources:
@@ -63,30 +66,59 @@ Resources:
       TransportProtocol: udp
     Type: AWS::EC2::ClientVpnEndpoint
 
-  ClientVpnTargetNetworkAssociation:
+  ClientVpnTargetNetworkAssociation1:
     Type: AWS::EC2::ClientVpnTargetNetworkAssociation
     Properties:
       ClientVpnEndpointId:
         Ref: ClientVpnEndpoint
       SubnetId:
-        Ref: AssociationSubnetId
+        Ref: AssociationSubnetId1
 
-  RouteToInternet:
-    DependsOn: ClientVpnTargetNetworkAssociation
+  ClientVpnTargetNetworkAssociation2:
+    Type: AWS::EC2::ClientVpnTargetNetworkAssociation
+    Properties:
+      ClientVpnEndpointId:
+        Ref: ClientVpnEndpoint
+      SubnetId:
+        Ref: AssociationSubnetId2
+
+  RouteToInternet1:
+    DependsOn: ClientVpnTargetNetworkAssociation1
     Type: AWS::EC2::ClientVpnRoute
     Properties:
-      Description: Route to the internet
+      Description: Route to the internet in AZ1
       ClientVpnEndpointId:
         Ref: ClientVpnEndpoint
       DestinationCidrBlock: 0.0.0.0/0
       TargetVpcSubnetId:
-        Ref: AssociationSubnetId
+        Ref: AssociationSubnetId1
 
-  RouteToInternetAuthorizationRule:
-    DependsOn: ClientVpnTargetNetworkAssociation
+  RouteToInternet2:
+    DependsOn: ClientVpnTargetNetworkAssociation2
+    Type: AWS::EC2::ClientVpnRoute
+    Properties:
+      Description: Route to the internet in AZ2
+      ClientVpnEndpointId:
+        Ref: ClientVpnEndpoint
+      DestinationCidrBlock: 0.0.0.0/0
+      TargetVpcSubnetId:
+        Ref: AssociationSubnetId2
+
+  RouteToInternetAuthorizationRule1:
+    DependsOn: ClientVpnTargetNetworkAssociation1
     Type: AWS::EC2::ClientVpnAuthorizationRule
     Properties:
-      Description: Route to the internet
+      Description: Route to the internet in AZ1
+      AuthorizeAllGroups: true
+      ClientVpnEndpointId:
+        Ref: ClientVpnEndpoint
+      TargetNetworkCidr: 0.0.0.0/0
+
+  RouteToInternetAuthorizationRule2:
+    DependsOn: ClientVpnTargetNetworkAssociation2
+    Type: AWS::EC2::ClientVpnAuthorizationRule
+    Properties:
+      Description: Route to the internet in AZ2
       AuthorizeAllGroups: true
       ClientVpnEndpointId:
         Ref: ClientVpnEndpoint
