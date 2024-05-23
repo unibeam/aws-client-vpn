@@ -16,7 +16,7 @@
 
 ```bash
 usage: client-vpn.py [-h] [--verbose] --server-cn SERVER_CN
-                     [--client-cn CLIENT_CN] --name NAME --subnet-id SUBNET_ID
+                     [--client-cn CLIENT_CN] --name NAME --subnet-id1 SUBNET_ID1 --subnet-id2 SUBNET_ID2
                      [--cidr CIDR]
 
 optional arguments:
@@ -27,8 +27,10 @@ optional arguments:
   --client-cn CLIENT_CN
                         common name for the server certificate
   --name NAME           stack and environment name the vpn
-  --subnet-id SUBNET_ID
-                        SubnetId to which the vpn will assocate with
+  --subnet-id1 SUBNET_ID1
+                        SubnetId to which the vpn will assocate with in AZ1
+  --subnet-id2 SUBNET_ID2
+                        SubnetId to which the vpn will assocate with in AZ2
   --cidr CIDR           CIDR the vpn will give to the clients
 ```
 
@@ -57,7 +59,7 @@ optional arguments:
 3. Run the `client-vpn.py` script with the following required options
 
   ```bash
-  ./client-vpn.py --server-cn=vpn.domain.tld --name ciinabox --subnet-id ${SubnetId}
+  ./client-vpn.py --server-cn=vpn.domain.tld --name ciinabox --subnet-id1 ${SubnetId1} --subnet-id2 ${SubnetId2}
   ```
 
 4. Run the `get-vpn-config.py` script to download the config file
