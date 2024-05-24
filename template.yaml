@@ -104,21 +104,13 @@ Resources:
       TargetVpcSubnetId:
         Ref: AssociationSubnetId2
 
-  RouteToInternetAuthorizationRule1:
-    DependsOn: ClientVpnTargetNetworkAssociation1
+  RouteToInternetAuthorizationRule:
+    DependsOn: 
+    - ClientVpnTargetNetworkAssociation1
+    - ClientVpnTargetNetworkAssociation2
     Type: AWS::EC2::ClientVpnAuthorizationRule
     Properties:
-      Description: Route to the internet in AZ1
-      AuthorizeAllGroups: true
-      ClientVpnEndpointId:
-        Ref: ClientVpnEndpoint
-      TargetNetworkCidr: 0.0.0.0/0
-
-  RouteToInternetAuthorizationRule2:
-    DependsOn: ClientVpnTargetNetworkAssociation2
-    Type: AWS::EC2::ClientVpnAuthorizationRule
-    Properties:
-      Description: Route to the internet in AZ2
+      Description: Route to the internet
       AuthorizeAllGroups: true
       ClientVpnEndpointId:
         Ref: ClientVpnEndpoint
