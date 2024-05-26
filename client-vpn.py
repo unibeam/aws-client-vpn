@@ -67,7 +67,7 @@ if docker_exists != 0:
     log.error("docker command does not exist in your path. Please start or install docker to use this script!")
     exit(1)
 
-docker_run = ["docker", "run", "-it", "--rm"]
+docker_run = ["docker", "run", "-i", "--rm"]
 docker_run.append(f"-e EASYRSA_REQ_CN={args.server_cn}")
 docker_run.append(f"-e EASYRSA_CLIENT_CN={args.client_cn}")
 docker_run.append("-v $PWD/output:/easy-rsa/output")
