@@ -116,6 +116,40 @@ Resources:
         Ref: ClientVpnEndpoint
       TargetNetworkCidr: 10.0.0.0/16
 
+  RouteToInternet1:
+    DependsOn: ClientVpnTargetNetworkAssociation1
+    Type: AWS::EC2::ClientVpnRoute
+    Properties:
+      Description: Route to the internet in AZ1
+      ClientVpnEndpointId:
+        Ref: ClientVpnEndpoint
+      DestinationCidrBlock: 0.0.0.0/0
+      TargetVpcSubnetId:
+        Ref: AssociationSubnetId1
+
+  RouteToInternet2:
+    DependsOn: ClientVpnTargetNetworkAssociation2
+    Type: AWS::EC2::ClientVpnRoute
+    Properties:
+      Description: Route to the internet in AZ2
+      ClientVpnEndpointId:
+        Ref: ClientVpnEndpoint
+      DestinationCidrBlock: 0.0.0.0/0
+      TargetVpcSubnetId:
+        Ref: AssociationSubnetId2
+
+  RouteToInternetAuthorizationRule:
+    DependsOn:
+    - ClientVpnTargetNetworkAssociation1
+    - ClientVpnTargetNetworkAssociation2
+    Type: AWS::EC2::ClientVpnAuthorizationRule
+    Properties:
+      Description: Route to the internet
+      AuthorizeAllGroups: true
+      ClientVpnEndpointId:
+        Ref: ClientVpnEndpoint
+      TargetNetworkCidr: 0.0.0.0/0
+
 Outputs:
   ClientVpnEndpointId:
     Description: Client VPN Endpoint Id
