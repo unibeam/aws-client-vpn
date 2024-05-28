@@ -82,39 +82,39 @@ Resources:
       SubnetId:
         Ref: AssociationSubnetId2
 
-  RouteToInternet1:
+  RouteToProdEKS1:
     DependsOn: ClientVpnTargetNetworkAssociation1
     Type: AWS::EC2::ClientVpnRoute
     Properties:
-      Description: Route to the internet in AZ1
+      Description: Route to the production EKS in AZ1
       ClientVpnEndpointId:
         Ref: ClientVpnEndpoint
-      DestinationCidrBlock: 0.0.0.0/0
+      DestinationCidrBlock: 10.0.0.0/16
       TargetVpcSubnetId:
         Ref: AssociationSubnetId1
 
-  RouteToInternet2:
+  RouteToProdEKS2:
     DependsOn: ClientVpnTargetNetworkAssociation2
     Type: AWS::EC2::ClientVpnRoute
     Properties:
-      Description: Route to the internet in AZ2
+      Description: Route to the production EKS in AZ2
       ClientVpnEndpointId:
         Ref: ClientVpnEndpoint
-      DestinationCidrBlock: 0.0.0.0/0
+      DestinationCidrBlock: 10.0.0.0/16
       TargetVpcSubnetId:
         Ref: AssociationSubnetId2
 
-  RouteToInternetAuthorizationRule:
+  RouteToProdEKSAuthorizationRule:
     DependsOn: 
     - ClientVpnTargetNetworkAssociation1
     - ClientVpnTargetNetworkAssociation2
     Type: AWS::EC2::ClientVpnAuthorizationRule
     Properties:
-      Description: Route to the internet
+      Description: Route to the production EKS
       AuthorizeAllGroups: true
       ClientVpnEndpointId:
         Ref: ClientVpnEndpoint
-      TargetNetworkCidr: 0.0.0.0/0
+      TargetNetworkCidr: 10.0.0.0/16
 
 Outputs:
   ClientVpnEndpointId:
